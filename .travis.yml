@@ -12,28 +12,27 @@ cache:
 script:
 - travis_wait ./gradlew check uberJar
 before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name "Jason Walonoski"
-  - git config --local user.email "jwalonoski@mitre.org"
-  - export TRAVIS_TAG=master-branch-latest
-  - git tag -d $TRAVIS_TAG
-  - git remote add upstream "https://$GH_TOKEN@github.com/synthetichealth/synthea.git"
-  - git push upstream :$TRAVIS_TAG
-  - git tag $TRAVIS_TAG
+- git config --local user.name "Jason Walonoski"
+- git config --local user.email "jwalonoski@mitre.org"
+- export TRAVIS_TAG=master-branch-latest
+- git tag -d $TRAVIS_TAG
+- git remote add upstream "https://$GH_TOKEN@github.com/synthetichealth/synthea.git"
+- git push upstream :$TRAVIS_TAG
+- git tag $TRAVIS_TAG
 deploy:
   provider: releases
-  api_key: $GH_TOKEN
+  api_key: "$GH_TOKEN"
   file: build/libs/synthea-with-dependencies.jar
   skip_cleanup: true
   on:
     tags: false
-    jdk: "openjdk8"
+    jdk: openjdk8
   overwrite: true
   prerelease: true
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
+- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
+  deploy.sh
 notifications:
   slack:
-    rooms:
-      secure: kkhOz7bqwfxC8x9Ml5RBBJJNID7u9ZW2VkG41bMENkp93E3+z+dlNV7vokJOQy6BqwDZn5BcsIJdhpXHONRWMZCcUzJEyiP9QkorWVoN6xtNaKwyRq9vDHeayvQ1Ks/JL6KoI4vTZqDYQgjZ4LgpKpB9resUxdwpW5dBrYulkEzpDogduIM64TGgnLxq6pgN78kyDlqIn7GlInSYouTYQyVtv+2eQUCVdKSpTIVh02abNmHlsEeJf4KtD4eMwYbN3xS0QTnKYjxnk/0KbUz+9c7EF671ttix3GNQbY2DvSXyhEg2TXXXUpopZO495Bl4eFnSmhskh7pizVRUAItgDv52AS67RGzVx+gVDNxG82QZyyvOywzzJxTXo1+I5W8CVsm27XdfWJgmSv6vBsF0ad/HpHRtl/CPo+wlwnVlXr+dv6HPsF9FSYH+SMl0J9KZ/VcXRCKlM1xklPhP9QY+jJY6oljH9l9tGzwoSfjDv+cNmZQPh5rkm6eAkfeqovE75t1aa2vEyllQIoJIZmtdH0kvnE5RO30RaA6BFCJ4Vmu2+5k7b+bpt5r1/ve5vGaIdycq4NDaFHTTKKVyjA4OOfiCZ7EM0zlfSKf5zwTUkeU8Qv6HK8h+lAUN9j/1Xer6yjsDv/9FWn0wZ1OuvYHvm2Ik4oM/eRJZw8N4pfT7BrY=
+    secure: dtqmeVNcKx8KVaSHTevQ0Osx/e+bYBL/xezlotobyMXBfNMxtDewrXA3dhkoj8vhXoyWvf7or+QY9PikTKYeaI+/WMJ+Mc8DbFILDxH3m1/968wE7MjIam2pmwzIzEiWxG6i6qoMc2/2PZJTT1XRRzEKqDBmMtij39aGnF7G/JitlMalNppEzPK0VHc1S/eP6XMjeFcUlp0etyPpe6xmv1Of+SuCaTcFbfEae9moYg9VgHmNr+xzlc3QT7Z6YUvvrWGmzgcQGjJdWeoZRHSHLbs+brjm6+zwtH+su8t4GIDQPL0sz8D8Uu4y5N0ff7aQ9/ezI8sAW2nfVSQl77V12ZqSvWgqAZ3yxUIrg6LsCDYPq4PJ1X/PvM1wgDTqoFoTdQ2m2KEe7vJ+leASDElWUR1QL4X2lK0aXgXNGxYmks2MoU69zrzd9dgCeJrveLZGA8YOB62CKSfy/viVhM4KntaatYkufD0GgWumni3wFLrW9mGTHi073PMEcx0fpsc+QyZJmbAgS9je6UCPf5fpOLc0K6SIFBtDbYiXSaBotG3rbdy8M83LQC4N3sPfk/cvn7mdptrWsha4laVXwA87ogOLKjnEFCV/3RfYj9apBWZ6WcfEdnN10QProCq7emJW+lUbexSe1xz5ZPmk8TMMND3BOVbbF1t7XKdWb/QuPc8=
